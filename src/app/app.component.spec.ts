@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'pfes-ecom'`, () => {
+  it(`should have as title 'HelloWorld'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('pfes-ecom');
+    expect(app.title).toEqual('HelloWorld');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('pfes-ecom app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('Hello world app is running!');
   });
 });

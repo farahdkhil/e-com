@@ -1,5 +1,4 @@
-<div class="container">
-    <h3>Hello {{name}}!</h3>
+<!-- <h3>Hello {{name}}!</h3>
     <img [src]="imageUrl" alt="Formalab Logo">
     <button (click)="hello(name)" class="btn btn-info">click me!</button>
     <br>
@@ -11,5 +10,28 @@
     </div>
     <div *ngIf="bookslist.length == 0" class="alert alert-warning">
         no books found
-    </div>
+    </div> -->
+<app-navbar></app-navbar>
+<div class="container">
+
+    <form [formGroup]="myForm" (ngSubmit)="saveUser()">
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="firstname">Firstname :</label>
+                <input class="form-control" type="text" name="firstname" id="firstname" formControlName="firstname">
+                <div *ngIf="firstname?.touched && firstname?.invalid">
+                    <small *ngIf="firstname?.errors?.required" class="text-danger">Firstname is required<br></small>
+                    <small *ngIf="firstname?.errors?.pattern" class="text-danger">Invalid Firstname<br></small>
+                    <small *ngIf="firstname?.errors?.minlength" class="text-danger">Firstname must contain two characters at least</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <input type="submit" value="Send" [disabled]="myForm.invalid" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
 </div>
+<app-footer></app-footer>
