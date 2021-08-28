@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-
+import { User } from '../user';
+import { UserService } from '../user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-user',
@@ -11,10 +13,15 @@ import { ActivatedRoute } from '@angular/router';
 export class AddUserComponent implements OnInit {
 
   addUserForm: FormGroup
+  
 
   constructor(
     private fb: FormBuilder,
     private route:ActivatedRoute,
+    private userService:UserService,
+    private router:Router,
+    private toastr: ToastrService
+    
     )
      {
 
@@ -48,7 +55,21 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
   }
    addUser() {
-    console.log(this.addUserForm.value);
+   // console.log(this.addUserForm.value);
+   let data = this.addUserForm.value;
+
+   let user = new User(data.firstname,data.lastname,data.phone);
+
+   this.userService.addUser(user).subscribe(
+     (res : any)=>{
+     console.log(res);
+       this.toastr.success(res.message);
+       this.router.navigate(['/people-list']);
+     },
+     (err : any)=>{
+       console.log(err);
+     }
+   )
   }
 
  

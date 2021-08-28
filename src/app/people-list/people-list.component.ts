@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-people-list',
@@ -6,31 +8,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./people-list.component.css']
 })
 export class PeopleListComponent implements OnInit {
-  peopleList = [
-    {
-      id: 1,
-      name: "Farah",
-      username: "Dkhil",
-      phone: "12 34 56 78"
-    },
-    {
-      id: 2,
-      name: "Hamdi",
-      username: "Zidan",
-      phone: "12 34 56 78"
-    }
-  ]
-  constructor() { }
+
+  peopleList: any[] = []
+  constructor(private userService:UserService , private toastr:ToastrService) { }
 
   ngOnInit(): void {
+    this.userService.getAllUsers().subscribe(
+      result=>{
+        this.peopleList = result
+      },
+      error=>{
+        console.log(error);
+      }
+    )
   }
-  delete(person: any) {
+
+  delete(person :any) {
     let index = this.peopleList.indexOf(person);
     this.peopleList.splice(index, 1);
 
+    this.userService.deleteUser(person._id).subscribe(
+      res=>{
+        this.toastr.error(res.message);
+      },
+      err =>{
+        console.log(err);
+      }
+    )
   }
+
 }
-
-
-
-

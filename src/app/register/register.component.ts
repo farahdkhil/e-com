@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute,  } from '@angular/router';
+import { User } from '../user';
+import { UserService } from '../user.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -8,36 +11,80 @@ import { ActivatedRoute,  } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  addUserForm: FormGroup
-
+  registerForm: FormGroup
+  
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-  ) {
+    private userService:UserService,
+    private router:Router,
+    private toastr: ToastrService
+    ) {
 
     let formControls = {
-      email: new FormControl('', [
-        Validators.required,
-        Validators.pattern("[A-Za-z .'-]+"),
-        Validators.minLength(10)
-      ]),
-      password: new FormControl('', [
+      firstname: new FormControl('',[
         Validators.required,
         Validators.pattern("[A-Za-z .'-]+"),
         Validators.minLength(2)
       ]),
+      lastname: new FormControl('',[
+        Validators.required,
+        Validators.pattern("[A-Za-z .'-]+"),
+        Validators.minLength(2)
+      ]),
+      phone: new FormControl('',[
+        Validators.required,
+        Validators.pattern("[0-9]+"),
+        Validators.minLength(8),
+        Validators.maxLength(13)
+      ]),
+      email: new FormControl('',[
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl('',[
+        Validators.required,
+        Validators.minLength(6)
+      ]),
+      repassword: new FormControl('',[
+        Validators.required,
+      ])
     }
 
-    this.addUserForm = this.fb.group(formControls)
+    this.registerForm = this.fb.group(formControls)
   }
 
-  get email() { return this.addUserForm.get('email') }
-  get password() { return this.addUserForm.get('password') }
+  get firstname() { return this.registerForm.get('firstname') }
+  get lastname() { return this.registerForm.get('lastname') }
+  get phone() { return this.registerForm.get('phone') }
+  get email() { return this.registerForm.get('email') }
+  get password() { return this.registerForm.get('password') }
+  get repassword() { return this.registerForm.get('repassword') }
+
 
   ngOnInit(): void {
-  }
-  saveUser() {
-    console.log(this.addUserForm.value);
+
+    let isLoggedIn = this.userService.isLoggedIn();
+
+    if (isLoggedIn) {
+      this.router.navigate(['/people-list']);
+    } 
   }
 
+  register() {
+
+    let data = this.registerForm.value;
+
+    let user = new User(data.firstname,data.lastname,data.email,data.phone,data.password);
+
+    this.userService.registerAdmin(user).subscribe(
+      (res : any)=>{
+        this.toastr.success(res.message);
+        this.router.navigate(['/login']);
+      },
+      (err: any)=>{
+        console.log(err);
+      }
+    )
+    
+  }
 }
