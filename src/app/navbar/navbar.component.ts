@@ -11,7 +11,7 @@ export class NavbarComponent implements OnInit {
   
   imageUrl = "assets/images/formalab.jfif";
 
-  isLoggedIn!: Boolean;
+  isLoggedIn?: Boolean;
 
   constructor(private userService:UserService,private router :Router) { }
 

@@ -58,7 +58,7 @@ export class AddUserComponent implements OnInit {
    // console.log(this.addUserForm.value);
    let data = this.addUserForm.value;
 
-   let user = new User(data.firstname,data.lastname,data.phone);
+   let user = new User(data.firstname,data.lastname,data.phone,data.null,data.null);
 
    this.userService.addUser(user).subscribe(
      (res : any)=>{

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../user';
 import { UserService } from '../user.service';
-import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -14,8 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginUserForm: FormGroup
- 
-
+  //isLoggedIn = false;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -40,7 +38,8 @@ export class LoginComponent implements OnInit {
 
   get email() { return this.loginUserForm.get('email') }
   get password() { return this.loginUserForm.get('password') }
-
+  
+ 
   ngOnInit(): void {
     let isLoggedIn = this.userService.isLoggedIn();
 
@@ -48,26 +47,27 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/people-list']);
     } 
   }
+  
   loginUser() {
-    // console.log(this.loginUserForm.value);
+    //console.log(this.loginUserForm.value);
     let data = this.loginUserForm.value;
 
-    let user = new User(data.email,data.password);
+    let user = new User(data.nulll,data.nulll,data.email,data.nulll,data.password);
 
     this.userService.loginAdmin(user).subscribe(
       res=>{
         console.log(res);
         let token = res.token;
+        //this.isLoggedIn = true;
         localStorage.setItem("myToken",token);
         this.router.navigate(['/people-list']);
       },
       err=>{
         console.log(err);
-        
+       // this.isLoggedIn = false;
       }
     )
     
   }
-
 
 }
