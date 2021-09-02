@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginUserForm: FormGroup
-  //isLoggedIn = false;
+ 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -49,22 +49,22 @@ export class LoginComponent implements OnInit {
   }
   
   loginUser() {
-    //console.log(this.loginUserForm.value);
+    
     let data = this.loginUserForm.value;
 
-    let user = new User(data.nulll,data.nulll,data.email,data.nulll,data.password);
+    let user = new User(undefined,undefined,data.email,undefined,data.password);
 
     this.userService.loginAdmin(user).subscribe(
       res=>{
         console.log(res);
         let token = res.token;
-        //this.isLoggedIn = true;
+       
         localStorage.setItem("myToken",token);
         this.router.navigate(['/people-list']);
       },
       err=>{
         console.log(err);
-       // this.isLoggedIn = false;
+      
       }
     )
     

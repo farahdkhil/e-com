@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
 
     let data = this.registerForm.value;
 
-    let user = new User(data.firstname,data.lastname,data.email,data.phone,data.password);
+    let user = new User(undefined,data.firstname,data.lastname,data.email,data.phone,data.password);
 
     this.userService.registerAdmin(user).subscribe(
       (res : any)=>{
